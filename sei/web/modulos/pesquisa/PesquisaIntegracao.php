@@ -4,12 +4,12 @@ class PesquisaIntegracao extends SeiIntegracao {
 	
 	public function getNome()
 	{
-		return 'SEI Pesquisa Pública';
+		return 'SEI Pesquisa Pï¿½blica';
 	}
 	
 	public function getVersao()
 	{
-		return '4.3.0';
+		return '4.4.0';
 	}
 	
 	
@@ -20,7 +20,7 @@ class PesquisaIntegracao extends SeiIntegracao {
 	
 	public function getInstituicao()
 	{
-		return 'Anatel - Agência Nacional de Telecomunicações (desenvolvido originalmente pelo CADE)';
+		return 'Anatel - Agï¿½ncia Nacional de Telecomunicaï¿½ï¿½es (desenvolvido originalmente pelo CADE)';
 	}
 	
 	public function processarControlador($strAcao)
@@ -29,6 +29,9 @@ class PesquisaIntegracao extends SeiIntegracao {
 		case 'md_pesq_parametro_listar':
 		case 'md_pesq_parametro_alterar':
 			require_once dirname ( __FILE__ ) . '/md_pesq_parametro_pesquisa_lista.php';
+			return true;
+		case 'md_pesq_api_router':
+			require_once dirname ( __FILE__ ) . '/api/v1/index.php';
 			return true;
 		}
 		return false;
@@ -75,7 +78,7 @@ class PesquisaIntegracao extends SeiIntegracao {
 			if(is_array($arrModulos) && array_key_exists('PesquisaIntegracao', $arrModulos)){
 				$caminho = $arrModulos['PesquisaIntegracao'];
 				$arrMenu = array();
-				$arrMenu[] = '-^'.ConfiguracaoSEI::getInstance()->getValor('SEI','URL').'/modulos/'.$caminho.'/md_pesq_processo_pesquisar.php?acao_externa=protocolo_pesquisar&acao_origem_externa=protocolo_pesquisar^^Pesquisa Pública^_blank^';
+				$arrMenu[] = '-^'.ConfiguracaoSEI::getInstance()->getValor('SEI','URL').'/modulos/'.$caminho.'/md_pesq_processo_pesquisar.php?acao_externa=protocolo_pesquisar&acao_origem_externa=protocolo_pesquisar^^Pesquisa Pï¿½blica^_blank^';
 				return $arrMenu;
 			}
 		}
@@ -108,11 +111,11 @@ class PesquisaIntegracao extends SeiIntegracao {
 	}
 	
 	/**
-	 * FUNCTION ADICIONADAS PARA ATENDER A MIGRAÇÃO DOS PARAMETROS DO MÓDULO UTILIDADES PARA O PESQUISA PÚBLICA
+	 * FUNCTION ADICIONADAS PARA ATENDER A MIGRAï¿½ï¿½O DOS PARAMETROS DO Mï¿½DULO UTILIDADES PARA O PESQUISA Pï¿½BLICA
 	 */
 	
 	/**
-	 *  Verifica se está na última conclusão
+	 *  Verifica se estï¿½ na ï¿½ltima conclusï¿½o
 	 * @param $idProtocolo
 	 * @return bool
 	 */
@@ -138,7 +141,7 @@ class PesquisaIntegracao extends SeiIntegracao {
 	public function listarDocumentos($idProcedimento)
 	{
 		if (!isset($idProcedimento)) {
-			throw new InfraException('Parâmetro $idProcedimento não informado.');
+			throw new InfraException('Parï¿½metro $idProcedimento nï¿½o informado.');
 		}
 		
 		$objDocumentoDTO = new DocumentoDTO();
@@ -160,7 +163,7 @@ class PesquisaIntegracao extends SeiIntegracao {
 	public function listarProcessosAnexado($idProcedimento)
 	{
 		if (!isset($idProcedimento)) {
-			throw new InfraException('Parâmetro $idProcedimento não informado.');
+			throw new InfraException('Parï¿½metro $idProcedimento nï¿½o informado.');
 		}
 		
 		$objRelProtocoloProtocoloDTO = new RelProtocoloProtocoloDTO();
@@ -203,7 +206,7 @@ class PesquisaIntegracao extends SeiIntegracao {
 	}
 	
 	/**
-	 * Verifica se Existe documentos restritos e se o valor da hipotese legal está setada no parâmentro
+	 * Verifica se Existe documentos restritos e se o valor da hipotese legal estï¿½ setada no parï¿½mentro
 	 * @param $documentos
 	 * @param $arrValor
 	 * @return string
@@ -345,7 +348,7 @@ class PesquisaIntegracao extends SeiIntegracao {
 			}
 			
 			if (!empty($listaDocumentos.$listaDocProcessoAnexo.$listaDocProcessoAnexo2.$listaMsgProcesso)) {
-				$msg = "Não é possível bloquear o processo n ".$objPrcPrincipalDTO->getStrProtocoloProcedimentoFormatado().", pois nele ou em processo anexado ainda constam documentos com Nível de Acesso Restrito usando as Hipóteses Legais abaixo: \n\n" . $listaDocumentos.$listaDocProcessoAnexo.$listaDocProcessoAnexo2.$listaMsgProcesso;
+				$msg = "Nï¿½o ï¿½ possï¿½vel bloquear o processo n ".$objPrcPrincipalDTO->getStrProtocoloProcedimentoFormatado().", pois nele ou em processo anexado ainda constam documentos com Nï¿½vel de Acesso Restrito usando as Hipï¿½teses Legais abaixo: \n\n" . $listaDocumentos.$listaDocProcessoAnexo.$listaDocProcessoAnexo2.$listaMsgProcesso;
 				$objInfraException = new InfraException();
 				$objInfraException->lancarValidacao($msg);
 			}
@@ -382,7 +385,7 @@ class PesquisaIntegracao extends SeiIntegracao {
 			$objPrcPrincipalDTO->retNumIdHipoteseLegalProtocolo();
 			$objPrcPrincipalDTO = (new ProcedimentoRN())->consultarRN0201($objPrcPrincipalDTO);
 			
-			// Caso o Processo esteja com restrição por Hipótese Legal
+			// Caso o Processo esteja com restriï¿½ï¿½o por Hipï¿½tese Legal
 			if ($objPrcPrincipalDTO->getStrStaNivelAcessoLocalProtocolo() == ProtocoloRN::$NA_RESTRITO) {
 				if (in_array($objPrcPrincipalDTO->getNumIdHipoteseLegalProtocolo(), $arrValor)) {
 					$objHipotesePrincipalDTO = new HipoteseLegalDTO();
@@ -460,7 +463,7 @@ class PesquisaIntegracao extends SeiIntegracao {
 			
 			if (!empty($listaDocumentos.$listaDocProcessoAnexo.$listaDocProcessoAnexo2.$listaMsgProcesso)) {
 				$objInfraException = new InfraException();
-				$msg = "Não é possível concluir o processo nº ".$objPrcPrincipalDTO->getStrProtocoloProcedimentoFormatado().", pois nele ou em processo anexado ainda constam documentos com Nível de Acesso Restrito usando as Hipóteses Legais abaixo: \n\n" . $listaDocumentos.$listaDocProcessoAnexo.$listaDocProcessoAnexo2.$listaMsgProcesso;
+				$msg = "Nï¿½o ï¿½ possï¿½vel concluir o processo nï¿½ ".$objPrcPrincipalDTO->getStrProtocoloProcedimentoFormatado().", pois nele ou em processo anexado ainda constam documentos com Nï¿½vel de Acesso Restrito usando as Hipï¿½teses Legais abaixo: \n\n" . $listaDocumentos.$listaDocProcessoAnexo.$listaDocProcessoAnexo2.$listaMsgProcesso;
 				return $objInfraException->lancarValidacao($msg);
 			}
 			

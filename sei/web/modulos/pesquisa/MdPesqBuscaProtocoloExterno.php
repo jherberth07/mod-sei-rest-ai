@@ -1,10 +1,10 @@
 <?php
 /**
- * CONSELHO ADMINISTRATIVO DE DEFESA ECONÔMICA
+ * CONSELHO ADMINISTRATIVO DE DEFESA ECONï¿½MICA
  * 2014-11-12
- * Versão do Gerador de Código: 1.0
+ * Versï¿½o do Gerador de Cï¿½digo: 1.0
  *
- * Classe de Busca na solução de indexação solr.
+ * Classe de Busca na soluï¿½ï¿½o de indexaï¿½ï¿½o solr.
  *
  */
 
@@ -288,7 +288,7 @@ class MdPesqBuscaProtocoloExterno{
 
             }
 
-            // Protege contra a não idexação no solr quando o processo ou documento passa de público para restrito ou quando o documento possui intimações não cumpridas:
+            // Protege contra a nï¿½o idexaï¿½ï¿½o no solr quando o processo ou documento passa de pï¿½blico para restrito ou quando o documento possui intimaï¿½ï¿½es nï¿½o cumpridas:
             if(!empty($objProtocoloDTO)){
                 $isProcesso     = $objProtocoloDTO->getStrStaProtocolo() == ProtocoloRN::$TP_PROCEDIMENTO;
                 $isDocumento    = $objProtocoloDTO->getStrStaProtocolo() != ProtocoloRN::$TP_PROCEDIMENTO;
@@ -361,7 +361,7 @@ class MdPesqBuscaProtocoloExterno{
                     $idProcedimento = $objDocumentoDTO->getDblIdProcedimento();
                     $dados["identificacao_protocolo"] = $objDocumentoDTO->getStrNomeSerie() . ' ' . $objDocumentoDTO->getStrNumero();
 
-                    // Esconde highlight se intimação do documento ou anexos não estiver cumprida:
+                    // Esconde highlight se intimaï¿½ï¿½o do documento ou anexos nï¿½o estiver cumprida:
                     if( PesquisaIntegracao::verificaSeModPeticionamentoVersaoMinima() ){
                         $objMdPetIntCertidaoRN =  new MdPetIntCertidaoRN();
                         if( !$objMdPetIntCertidaoRN->verificaDocumentoEAnexoIntimacaoNaoCumprida( array($objDocumentoDTO->getDblIdDocumento(),false,false,true) ) ){
@@ -369,7 +369,7 @@ class MdPesqBuscaProtocoloExterno{
                         }
                     }
 
-                    // INCLUIDO 21/12/2015 Substitui data de geração para data de assinatura de documentos gerados
+                    // INCLUIDO 21/12/2015 Substitui data de geraï¿½ï¿½o para data de assinatura de documentos gerados
                     if ($objProtocoloDTO->getStrStaProtocolo() == ProtocoloRN::$TP_DOCUMENTO_GERADO) {
                         $objAssinaturaDTO = new AssinaturaDTO();
                         $objAssinaturaDTO->setDblIdDocumento($idProtocolo);
@@ -414,12 +414,12 @@ class MdPesqBuscaProtocoloExterno{
                     $strNomeTipoProcedimento = $objTipoProcedimentoDTO->getStrNome();
                 }
             }
-            $titulo = $strNomeTipoProcedimento . " nº" . $tituloLinkNumeroProcesso;
+            $titulo = $strNomeTipoProcedimento . " nï¿½" . $tituloLinkNumeroProcesso;
             $strProtocoloDocumento = "";
             if (empty($dados["protocolo_documento_formatado"]) == false) {
                 if ($objDocumentoDTO == null) {
                     
-                    // TODO esse trecho remove registros que tem protocolo mas não tem o documento
+                    // TODO esse trecho remove registros que tem protocolo mas nï¿½o tem o documento
                     // faz quebrar a pesquisa ao inves de ignorar os registros defeituosos
                     //
                     // print_r($idProtocolo);
@@ -447,12 +447,12 @@ class MdPesqBuscaProtocoloExterno{
             $tituloCompleto .= "<img border=\"0\" src=\"../../svg/arvore.svg\" alt=\"Acessar\" title=\"Acessar\" class=\"arvore\" />";
             $tituloCompleto .= "</a>";
             $tituloCompleto .= $titulo;
-            // REMOVE TAGS DO TÍTULO
+            // REMOVE TAGS DO Tï¿½TULO
             $tituloCompleto = preg_replace("/&lt;.*?&gt;/", "", $tituloCompleto);
             if ($objProtocoloDTO) {
                 if(!$isPublico && !$bolLinkMetadadosProcessoRestrito) {
 
-                    $titulo = $strNomeTipoProcedimento . " nº " . $dados["protocolo_processo_formatado"];
+                    $titulo = $strNomeTipoProcedimento . " nï¿½ " . $dados["protocolo_processo_formatado"];
                     if($objProtocoloDTO->getStrStaProtocolo() != ProtocoloRN::$TP_PROCEDIMENTO){
                         $titulo .= " (".trim($dados["identificacao_protocolo"]).")";
                     }
@@ -466,7 +466,7 @@ class MdPesqBuscaProtocoloExterno{
                     $objHipoteseLegalDTO = (new HipoteseLegalRN())->consultar($objHipoteseLegalDTO);
 
                     if ($objHipoteseLegalDTO != null) {
-                        $snippet = '<b>Hipótese Legal de Restrição de Acesso: ' . $objHipoteseLegalDTO->getStrNome() . ' (' . $objHipoteseLegalDTO->getStrBaseLegal() . ')</b>';
+                        $snippet = '<b>Hipï¿½tese Legal de Restriï¿½ï¿½o de Acesso: ' . $objHipoteseLegalDTO->getStrNome() . ' (' . $objHipoteseLegalDTO->getStrBaseLegal() . ')</b>';
                         if (!empty($txtDescricaoProcedimentoAcessoRestrito)) {
                             $snippet .= '<br/>' . $txtDescricaoProcedimentoAcessoRestrito;
                         }
@@ -500,7 +500,7 @@ class MdPesqBuscaProtocoloExterno{
                 if (is_array($arrMetatags) && count($arrMetatags) > 0) {
                     $html .= "<tr>\n";
                     foreach ($arrMetatags as $nomeMetaTag => $valorMetaTag) {
-                        if($nomeMetaTag != 'Usuário' && $valorMetaTag != ''){
+                        if($nomeMetaTag != 'Usuï¿½rio' && $valorMetaTag != ''){
                             $html .= "<td class=\"pesquisaMetatag\" width=\"33%\"><b>" . $nomeMetaTag . ":</b> " . $valorMetaTag . "</td>\n";
                         }else{
                             $html .= "<td class=\"pesquisaMetatag\" width=\"33%\"></td>\n";
@@ -513,7 +513,7 @@ class MdPesqBuscaProtocoloExterno{
         }
 
         //NESSE CASO DEVE ATUALIZAR O RETORNO VAZIO DIZENDO EXISTEM MAIS REGISTROS PARA TENTAR RETORNAR
-        //OS REGISTROS DA PAGINA PODE TER SIDO REMOVIDOS DEVIDO A UMA REGRA DA INTIMAÇÃO NAO CUMPRIDA
+        //OS REGISTROS DA PAGINA PODE TER SIDO REMOVIDOS DEVIDO A UMA REGRA DA INTIMAï¿½ï¿½O NAO CUMPRIDA
         if(count($registros) - $removidos == 0){
             return ['itens' => $itens,'html'  => ''];
         }
@@ -532,11 +532,11 @@ class MdPesqBuscaProtocoloExterno{
     private static function retornoVazio($termo)
     {
         $semResultados = "<consultavazia>";
-        $semResultados .= "<div class=\"sem-resultado\">Sua pesquisa pelo termo <b>" .$termo. "</b> não encontrou nenhum protocolo correspondente. <br/><br/>Sugestões:";
+        $semResultados .= "<div class=\"sem-resultado\">Sua pesquisa pelo termo <b>" .$termo. "</b> nï¿½o encontrou nenhum protocolo correspondente. <br/><br/>Sugestï¿½es:";
         $semResultados .= "<ul>";
         $semResultados .= "<li>Certifique-se de que todas as palavras estejam escritas corretamente.</li>";
         $semResultados .= "<li>Tente palavras-chave diferentes.</li>";
-        $semResultados .= "<li>Tente palavras-chave mais genéricas.</li>";
+        $semResultados .= "<li>Tente palavras-chave mais genï¿½ricas.</li>";
         $semResultados .= "</ul>";
         $semResultados .= "</div>";
         $semResultados .= "</consultavazia>";
@@ -551,6 +551,47 @@ class MdPesqBuscaProtocoloExterno{
         if ($enc !== 'UTF-8') $s = mb_convert_encoding($s, 'UTF-8', $enc ?: 'UTF-8');
         $s = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F]/u', '', $s);
         return $s;
+    }
+
+    /**
+     * MÃ©todo adicional para API REST - pesquisa simplificada de processos
+     */
+    public function pesquisarProcessos($arrParams)
+    {
+        try {
+            $termo = isset($arrParams['palavras_pesquisa']) ? $arrParams['palavras_pesquisa'] : '';
+            $tipoProcesso = isset($arrParams['tipo_pesquisa']) ? $arrParams['tipo_pesquisa'] : 'processo';
+            $nivelAcesso = isset($arrParams['nivel_acesso']) ? $arrParams['nivel_acesso'] : ProtocoloRN::$NA_PUBLICO;
+            
+            if (empty($termo) || strlen($termo) < 3) {
+                return array();
+            }
+            
+            // Usa a pesquisa bÃ¡sica do ProtocoloRN para retornar resultados
+            $objPesquisaProtocoloDTO = new PesquisaProtocoloDTO();
+            $objPesquisaProtocoloDTO->setStrStaTipo(ProtocoloRN::$TPP_PROCEDIMENTOS);
+            $objPesquisaProtocoloDTO->setStrStaAcesso($nivelAcesso);
+            $objPesquisaProtocoloDTO->setStrPalavrasChave($termo);
+            $objPesquisaProtocoloDTO->setNumMaxRegistrosRetorno(100);
+            
+            $objProtocoloRN = new ProtocoloRN();
+            $arrProtocolos = $objProtocoloRN->pesquisarRN0967($objPesquisaProtocoloDTO);
+            
+            $resultados = array();
+            foreach ($arrProtocolos as $protocolo) {
+                $resultados[] = array(
+                    'id' => $protocolo->getDblIdProtocolo(),
+                    'protocolo' => $protocolo->getStrProtocoloFormatado(),
+                    'tipo' => $protocolo->getStrNomeTipoProcedimento(),
+                    'relevancia' => 1.0 // Valor fixo para compatibilidade
+                );
+            }
+            
+            return $resultados;
+            
+        } catch (Exception $e) {
+            return array();
+        }
     }
 
 }

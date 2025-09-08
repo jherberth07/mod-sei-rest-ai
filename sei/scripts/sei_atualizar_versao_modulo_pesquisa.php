@@ -5,10 +5,10 @@ class MdPesqAtualizadorSeiRN extends InfraRN
 {
 
     private $numSeg = 0;
-    private $versaoAtualDesteModulo = '4.3.0';
-    private $nomeDesteModulo = 'MÓDULO DE PESQUISA PÚBLICA';
+    private $versaoAtualDesteModulo = '4.4.0';
+    private $nomeDesteModulo = 'Mï¿½DULO DE PESQUISA Pï¿½BLICA';
     private $nomeParametroModulo = 'VERSAO_MODULO_PESQUISA_PUBLICA';
-    private $historicoVersoes = array('3.0.0', '4.0.0', '4.0.1', '4.1.0', '4.2.0','4.3.0');
+    private $historicoVersoes = array('3.0.0', '4.0.0', '4.0.1', '4.1.0', '4.2.0','4.3.0','4.4.0');
 
     public function __construct()
     {
@@ -50,7 +50,7 @@ class MdPesqAtualizadorSeiRN extends InfraRN
     {
         if (!$bolErro) {
             $this->numSeg = InfraUtil::verificarTempoProcessamento($this->numSeg);
-            $this->logar('TEMPO TOTAL DE EXECUÇÃO: ' . $this->numSeg . ' s');
+            $this->logar('TEMPO TOTAL DE EXECUï¿½ï¿½O: ' . $this->numSeg . ' s');
         } else {
             $strMsg = 'ERRO: ' . $strMsg;
         }
@@ -70,20 +70,20 @@ class MdPesqAtualizadorSeiRN extends InfraRN
     {
 
         try {
-            $this->inicializar('INICIANDO A INSTALAÇÃO/ATUALIZAÇÃO DO ' . $this->nomeDesteModulo . ' NO SEI VERSÃO ' . SEI_VERSAO);
+            $this->inicializar('INICIANDO A INSTALAï¿½ï¿½O/ATUALIZAï¿½ï¿½O DO ' . $this->nomeDesteModulo . ' NO SEI VERSï¿½O ' . SEI_VERSAO);
 
             //checando BDs suportados
             if (!(BancoSEI::getInstance() instanceof InfraMySql) &&
                 !(BancoSEI::getInstance() instanceof InfraSqlServer) &&
                 !(BancoSEI::getInstance() instanceof InfraOracle) &&
                 !(BancoSEI::getInstance() instanceof InfraPostgreSql)) {
-                $this->finalizar('BANCO DE DADOS NÃO SUPORTADO: ' . get_parent_class(BancoSEI::getInstance()), true);
+                $this->finalizar('BANCO DE DADOS Nï¿½O SUPORTADO: ' . get_parent_class(BancoSEI::getInstance()), true);
             }
 
             //testando versao do framework
             $numVersaoInfraRequerida = '2.37.1';
             if (version_compare(VERSAO_INFRA, $numVersaoInfraRequerida) < 0) {
-                $this->finalizar('VERSÃO DO FRAMEWORK PHP INCOMPATÍVEL (VERSÃO ATUAL ' . VERSAO_INFRA . ', SENDO REQUERIDA VERSÃO IGUAL OU SUPERIOR A ' . $numVersaoInfraRequerida . ')', true);
+                $this->finalizar('VERSï¿½O DO FRAMEWORK PHP INCOMPATï¿½VEL (VERSï¿½O ATUAL ' . VERSAO_INFRA . ', SENDO REQUERIDA VERSï¿½O IGUAL OU SUPERIOR A ' . $numVersaoInfraRequerida . ')', true);
             }
 
             //checando permissoes na base de dados
@@ -112,10 +112,12 @@ class MdPesqAtualizadorSeiRN extends InfraRN
 		            $this->instalarv420();
                 case '4.2.0':
 		            $this->instalarv430();
+                case '4.3.0':
+		            $this->instalarv440();
                     break;
 
                 default:
-                    $this->finalizar('A VERSÃO MAIS ATUAL DO ' . $this->nomeDesteModulo . ' (v' . $this->versaoAtualDesteModulo . ') JÁ ESTÁ INSTALADA.');
+                    $this->finalizar('A VERSï¿½O MAIS ATUAL DO ' . $this->nomeDesteModulo . ' (v' . $this->versaoAtualDesteModulo . ') Jï¿½ ESTï¿½ INSTALADA.');
                     break;
 
             }
@@ -126,7 +128,7 @@ class MdPesqAtualizadorSeiRN extends InfraRN
             InfraDebug::getInstance()->setBolLigado(true);
             InfraDebug::getInstance()->setBolDebugInfra(true);
             InfraDebug::getInstance()->setBolEcho(true);
-            throw new InfraException('Erro instalando/atualizando versão.', $e);
+            throw new InfraException('Erro instalando/atualizando versï¿½o.', $e);
         }
     }
 
@@ -136,7 +138,7 @@ class MdPesqAtualizadorSeiRN extends InfraRN
 		
         $objInfraMetaBD = new InfraMetaBD(BancoSEI::getInstance());
 
-        $this->logar('EXECUTANDO A INSTALAÇÃO/ATUALIZAÇÃO DA VERSÃO '. $nmVersao .' DO ' . $this->nomeDesteModulo . ' NA BASE DO SEI');
+        $this->logar('EXECUTANDO A INSTALAï¿½ï¿½O/ATUALIZAï¿½ï¿½O DA VERSï¿½O '. $nmVersao .' DO ' . $this->nomeDesteModulo . ' NA BASE DO SEI');
 
         $this->logar('CRIANDO A TABELA md_pesq_parametro');
         BancoSEI::getInstance()->executarSql('CREATE TABLE md_pesq_parametro (
@@ -156,7 +158,7 @@ class MdPesqAtualizadorSeiRN extends InfraRN
             array('Nome' => 'PROCESSO_RESTRITO', 'Valor' => 'S'),
             array('Nome' => 'METADADOS_PROCESSO_RESTRITO', 'Valor' => 'S'),
             array('Nome' => 'LISTA_ANDAMENTO_PROCESSO_RESTRITO', 'Valor' => 'S'),
-            array('Nome' => 'DESCRICAO_PROCEDIMENTO_ACESSO_RESTRITO', 'Valor' => 'Processo ou Documento de Acesso Restrito - Para condições de acesso verifique a <a style="font-size: 1em;" href="http://[orgao]/link_condicao_acesso" target="_blank">Condição de Acesso</a> ou entre em contato pelo e-mail: sei@orgao.gov.br'),
+            array('Nome' => 'DESCRICAO_PROCEDIMENTO_ACESSO_RESTRITO', 'Valor' => 'Processo ou Documento de Acesso Restrito - Para condiï¿½ï¿½es de acesso verifique a <a style="font-size: 1em;" href="http://[orgao]/link_condicao_acesso" target="_blank">Condiï¿½ï¿½o de Acesso</a> ou entre em contato pelo e-mail: sei@orgao.gov.br'),
             array('Nome' => 'DOCUMENTO_PROCESSO_PUBLICO', 'Valor' => 'S'),
             array('Nome' => 'LISTA_DOCUMENTO_PROCESSO_PUBLICO', 'Valor' => 'S'),
             array('Nome' => 'LISTA_DOCUMENTO_PROCESSO_RESTRITO', 'Valor' => 'S'),
@@ -174,9 +176,9 @@ class MdPesqAtualizadorSeiRN extends InfraRN
             $objParametroPesquisaRN->cadastrar($objParametroPesquisaDTO);
         }
 		
-		$this->logar('ADICIONANDO PARÂMETRO ' . $this->nomeParametroModulo . ' NA TABELA infra_parametro PARA CONTROLAR A VERSÃO DO MÓDULO');
+		$this->logar('ADICIONANDO PARï¿½METRO ' . $this->nomeParametroModulo . ' NA TABELA infra_parametro PARA CONTROLAR A VERSï¿½O DO Mï¿½DULO');
         BancoSEI::getInstance()->executarSql('INSERT INTO infra_parametro (valor, nome) VALUES( \'3.0.0\',  \'' . $this->nomeParametroModulo . '\' )');
-        $this->logar('INSTALAÇÃO/ATUALIZAÇÃO DA VERSÃO '. $nmVersao .' DO ' . $this->nomeDesteModulo . ' REALIZADA COM SUCESSO NA BASE DO SEI');
+        $this->logar('INSTALAï¿½ï¿½O/ATUALIZAï¿½ï¿½O DA VERSï¿½O '. $nmVersao .' DO ' . $this->nomeDesteModulo . ' REALIZADA COM SUCESSO NA BASE DO SEI');
     }
 
     protected function instalarv400()
@@ -186,7 +188,7 @@ class MdPesqAtualizadorSeiRN extends InfraRN
         $objInfraMetaBD = new InfraMetaBD(BancoSEI::getInstance());
         $objInfraMetaBD->setBolValidarIdentificador(true);
 
-        $this->logar('EXECUTANDO A INSTALAÇÃO/ATUALIZAÇÃO DA VERSÃO '. $nmVersao .' DO ' . $this->nomeDesteModulo . ' NA BASE DO SEI');
+        $this->logar('EXECUTANDO A INSTALAï¿½ï¿½O/ATUALIZAï¿½ï¿½O DA VERSï¿½O '. $nmVersao .' DO ' . $this->nomeDesteModulo . ' NA BASE DO SEI');
 
         $arrTabelas = array('md_pesq_parametro');
 
@@ -199,7 +201,7 @@ class MdPesqAtualizadorSeiRN extends InfraRN
     {
         $nmVersao = '4.0.1';
 
-        $this->logar('EXECUTANDO A INSTALAÇÃO/ATUALIZAÇÃO DA VERSÃO '. $nmVersao .' DO ' . $this->nomeDesteModulo . ' NA BASE DO SEI');
+        $this->logar('EXECUTANDO A INSTALAï¿½ï¿½O/ATUALIZAï¿½ï¿½O DA VERSï¿½O '. $nmVersao .' DO ' . $this->nomeDesteModulo . ' NA BASE DO SEI');
 
         $this->atualizarNumeroVersao($nmVersao);
     }
@@ -211,7 +213,7 @@ class MdPesqAtualizadorSeiRN extends InfraRN
         $objInfraMetaBD = new InfraMetaBD(BancoSEI::getInstance());
         $objInfraMetaBD->setBolValidarIdentificador(true);
 
-        $this->logar('EXECUTANDO A INSTALAÇÃO/ATUALIZAÇÃO DA VERSÃO '. $nmVersao .' DO ' . $this->nomeDesteModulo . ' NA BASE DO SEI');
+        $this->logar('EXECUTANDO A INSTALAï¿½ï¿½O/ATUALIZAï¿½ï¿½O DA VERSï¿½O '. $nmVersao .' DO ' . $this->nomeDesteModulo . ' NA BASE DO SEI');
 
         $this->logar('ALTERANDO COLUNA valor NA TABELA md_pesq_parametro PARA ACEITAR VALOR NULO ANTES DE ADICIONAR O PARAMETRO DATA_CORTE');
         if (BancoSEI::getInstance() instanceof InfraOracle) {
@@ -231,7 +233,7 @@ class MdPesqAtualizadorSeiRN extends InfraRN
             
         }
         
-        $this->logar('INSERINDO NOVO PARÂMETRO "DATA_CORTE" NA TABELA md_pesq_parametro');
+        $this->logar('INSERINDO NOVO PARï¿½METRO "DATA_CORTE" NA TABELA md_pesq_parametro');
 
         $MdPesqParametroPesquisaDTO = new MdPesqParametroPesquisaDTO();
         $MdPesqParametroPesquisaDTO->setStrNome('DATA_CORTE');
@@ -254,12 +256,12 @@ class MdPesqAtualizadorSeiRN extends InfraRN
 	
 	    $nmVersao = '4.2.0';
 	
-	    $this->logar('EXECUTANDO A INSTALAÇÃO/ATUALIZAÇÃO DA VERSÃO '.$nmVersao.' DO ' . $this->nomeDesteModulo . ' NA BASE DO SEI');
+	    $this->logar('EXECUTANDO A INSTALAï¿½ï¿½O/ATUALIZAï¿½ï¿½O DA VERSï¿½O '.$nmVersao.' DO ' . $this->nomeDesteModulo . ' NA BASE DO SEI');
 	
 	    $objInfraMetaBD = new InfraMetaBD(BancoSEI::getInstance());
 	    $objInfraMetaBD->setBolValidarIdentificador(true);
 	
-	    $this->logar('>>>> MIGRANDO PARÂMETROS DO UTILIDADES PARA O PESQUISA PÚBLICA');
+	    $this->logar('>>>> MIGRANDO PARï¿½METROS DO UTILIDADES PARA O PESQUISA Pï¿½BLICA');
 	
 	    $arrStrModulos = [ 0 => 'UTILIDADES' , 1 => 'PESQUISA_PUBLICA'];
 	
@@ -291,7 +293,7 @@ class MdPesqAtualizadorSeiRN extends InfraRN
 			    $objInfraParametroRN->cadastrar($objInfraParametroDTO);
 			
 			    $this->logar('------------------------------------------------------------------------');
-			    $this->logar("Cadastrado o parâmetro: $strNovoParam");
+			    $this->logar("Cadastrado o parï¿½metro: $strNovoParam");
 			    $this->logar('------------------------------------------------------------------------');
 			
 			    // processo para excluir o parametro usado como referencia do modulo utilidades
@@ -301,7 +303,7 @@ class MdPesqAtualizadorSeiRN extends InfraRN
 			    $objInfraParametroDTO = $objInfraParametroRN->listar($objInfraParametroDTO);
 			    $objInfraParametroRN->excluir($objInfraParametroDTO);
 			    $this->logar('------------------------------------------------------------------------');
-			    $this->logar("Excluído o parâmetro: $str");
+			    $this->logar("Excluï¿½do o parï¿½metro: $str");
 			    $this->logar('------------------------------------------------------------------------');
 			
 		    }else{
@@ -313,7 +315,7 @@ class MdPesqAtualizadorSeiRN extends InfraRN
 			    $objInfraParametroRN->cadastrar($objInfraParametroDTO);
 			
 			    $this->logar('------------------------------------------------------------------------');
-			    $this->logar("Cadastrado o parâmetro: $strNovoParam");
+			    $this->logar("Cadastrado o parï¿½metro: $strNovoParam");
 			    $this->logar('------------------------------------------------------------------------');
 		    	
 		    }
@@ -331,7 +333,7 @@ class MdPesqAtualizadorSeiRN extends InfraRN
 	    $objInfraParametroRN->excluir($objInfraParametroDTO);
 	    
 	    $this->logar('------------------------------------------------------------------------');
-	    $this->logar("Excluído o parâmetro: $excluirParametro");
+	    $this->logar("Excluï¿½do o parï¿½metro: $excluirParametro");
 	    $this->logar('------------------------------------------------------------------------');
 	    
 	    $this->atualizarNumeroVersao($nmVersao);
@@ -340,7 +342,78 @@ class MdPesqAtualizadorSeiRN extends InfraRN
 
     protected function instalarv430(){
         $nmVersao = '4.3.0';
-        $this->logar('EXECUTANDO A INSTALAÇÃO/ATUALIZAÇÃO DA VERSÃO '.$nmVersao.' DO ' . $this->nomeDesteModulo . ' NA BASE DO SEI');
+        $this->logar('EXECUTANDO A INSTALAï¿½ï¿½O/ATUALIZAï¿½ï¿½O DA VERSï¿½O '.$nmVersao.' DO ' . $this->nomeDesteModulo . ' NA BASE DO SEI');
+        $this->atualizarNumeroVersao($nmVersao);
+    }
+
+    protected function instalarv440(){
+        $nmVersao = '4.4.0';
+        $this->logar('EXECUTANDO A INSTALAï¿½ï¿½O/ATUALIZAï¿½ï¿½O DA VERSï¿½O '.$nmVersao.' DO ' . $this->nomeDesteModulo . ' NA BASE DO SEI');
+        
+        $objInfraMetaBD = new InfraMetaBD(BancoSEI::getInstance());
+        
+        // Executa o script de migraÃ§Ã£o da API
+        $this->logar('CRIANDO ESTRUTURAS PARA API REST v1...');
+        
+        // Cria tabela de chaves de API
+        $this->logar('CRIANDO TABELA md_pesq_api_key...');
+        BancoSEI::getInstance()->executarSql('CREATE TABLE md_pesq_api_key (' .
+            'id_api_key ' . $objInfraMetaBD->tipoNumero() . ' NOT NULL, ' .
+            'id_contato ' . $objInfraMetaBD->tipoNumero() . ' NOT NULL, ' .
+            'api_key ' . $objInfraMetaBD->tipoTextoVariavel(255) . ' NOT NULL, ' .
+            'sin_ativo ' . $objInfraMetaBD->tipoTextoFixo(1) . ' NOT NULL, ' .
+            'dth_criacao ' . $objInfraMetaBD->tipoDataHora() . ' NOT NULL, ' .
+            'dth_ultimo_acesso ' . $objInfraMetaBD->tipoDataHora() . ' NULL, ' .
+            'dth_expiracao ' . $objInfraMetaBD->tipoDataHora() . ' NULL, ' .
+            'descricao ' . $objInfraMetaBD->tipoTextoVariavel(500) . ' NULL, ' .
+            'permissoes ' . $objInfraMetaBD->tipoTextoGrande() . ' NULL' .
+        ')');
+        
+        // Adiciona chaves e constraints
+        $objInfraMetaBD->adicionarChavePrimaria('md_pesq_api_key', 'pk_md_pesq_api_key', array('id_api_key'));
+        $objInfraMetaBD->adicionarChaveEstrangeira('fk_md_pesq_api_key_contato', 'md_pesq_api_key', array('id_contato'), 'contato', array('id_contato'));
+        
+        // Cria tabela de logs de API
+        $this->logar('CRIANDO TABELA md_pesq_api_log...');
+        BancoSEI::getInstance()->executarSql('CREATE TABLE md_pesq_api_log (' .
+            'id_log ' . $objInfraMetaBD->tipoNumero() . ' NOT NULL, ' .
+            'id_api_key ' . $objInfraMetaBD->tipoNumero() . ' NULL, ' .
+            'endpoint ' . $objInfraMetaBD->tipoTextoVariavel(500) . ' NOT NULL, ' .
+            'metodo ' . $objInfraMetaBD->tipoTextoVariavel(10) . ' NOT NULL, ' .
+            'parametros ' . $objInfraMetaBD->tipoTextoGrande() . ' NULL, ' .
+            'dth_acesso ' . $objInfraMetaBD->tipoDataHora() . ' NOT NULL, ' .
+            'ip_usuario ' . $objInfraMetaBD->tipoTextoVariavel(45) . ' NULL, ' .
+            'user_agent ' . $objInfraMetaBD->tipoTextoGrande() . ' NULL, ' .
+            'codigo_resposta ' . $objInfraMetaBD->tipoNumero() . ' NULL, ' .
+            'tempo_execucao ' . $objInfraMetaBD->tipoNumero() . ' NULL' .
+        ')');
+        
+        // Adiciona chaves e constraints
+        $objInfraMetaBD->adicionarChavePrimaria('md_pesq_api_log', 'pk_md_pesq_api_log', array('id_log'));
+        $objInfraMetaBD->adicionarChaveEstrangeira('fk_md_pesq_api_log_key', 'md_pesq_api_log', array('id_api_key'), 'md_pesq_api_key', array('id_api_key'));
+        
+        // Insere parÃ¢metros de configuraÃ§Ã£o da API se nÃ£o existem
+        $this->logar('INSERINDO PARÃ‚METROS DE CONFIGURAÃ‡ÃƒO DA API...');
+        
+        $arrParametrosApi = array(
+            array('nome' => 'API_REST_HABILITADA', 'valor' => 'S'),
+            array('nome' => 'API_REST_RATE_LIMIT', 'valor' => '1000'),
+            array('nome' => 'API_REST_CORS_ORIGINS', 'valor' => '*'),
+            array('nome' => 'API_REST_LOG_RETENCAO_DIAS', 'valor' => '90')
+        );
+        
+        foreach ($arrParametrosApi as $parametro) {
+            try {
+                BancoSEI::getInstance()->executarSql("INSERT INTO md_pesq_parametro_pesquisa (id_parametro_pesquisa, nome, valor) VALUES " .
+                    "(nextval('seq_md_pesq_parametro_pesquisa'), '" . $parametro['nome'] . "', '" . $parametro['valor'] . "')");
+                $this->logar('ParÃ¢metro ' . $parametro['nome'] . ' inserido com sucesso');
+            } catch (Exception $e) {
+                // Se o parÃ¢metro jÃ¡ existe, apenas loga
+                $this->logar('ParÃ¢metro ' . $parametro['nome'] . ' jÃ¡ existe');
+            }
+        }
+        
+        $this->logar('ESTRUTURAS PARA API REST v1 CRIADAS COM SUCESSO');
         $this->atualizarNumeroVersao($nmVersao);
     }
 
@@ -356,13 +429,13 @@ class MdPesqAtualizadorSeiRN extends InfraRN
     }
 
 	/**
-	 * Atualiza o número de versão do módulo na tabela de parâmetro do sistema
+	 * Atualiza o nï¿½mero de versï¿½o do mï¿½dulo na tabela de parï¿½metro do sistema
 	 *
 	 * @param string $parStrNumeroVersao
 	 * @return void
 	 */
 	private function atualizarNumeroVersao($parStrNumeroVersao)	{
-		$this->logar('ATUALIZANDO PARÂMETRO '. $this->nomeParametroModulo .' NA TABELA infra_parametro PARA CONTROLAR A VERSÃO DO MÓDULO');
+		$this->logar('ATUALIZANDO PARï¿½METRO '. $this->nomeParametroModulo .' NA TABELA infra_parametro PARA CONTROLAR A VERSï¿½O DO Mï¿½DULO');
 
 		$objInfraParametroDTO = new InfraParametroDTO();
 		$objInfraParametroDTO->setStrNome($this->nomeParametroModulo);
@@ -375,7 +448,7 @@ class MdPesqAtualizadorSeiRN extends InfraRN
 			$objInfraParametroBD->alterar($objInfraParametroDTO);
 		}
         
-		$this->logar('INSTALAÇÃO/ATUALIZAÇÃO DA VERSÃO '. $parStrNumeroVersao .' DO '. $this->nomeDesteModulo .' REALIZADA COM SUCESSO NA BASE DO SEI');
+		$this->logar('INSTALAï¿½ï¿½O/ATUALIZAï¿½ï¿½O DA VERSï¿½O '. $parStrNumeroVersao .' DO '. $this->nomeDesteModulo .' REALIZADA COM SUCESSO NA BASE DO SEI');
 	}
 
 }
@@ -389,16 +462,16 @@ try {
     $arrConfig = $configuracaoSEI->getInstance()->getArrConfiguracoes();
 
     if (!isset($arrConfig['SEI']['Modulos'])) {
-        throw new InfraException('PARÂMETRO DE MÓDULOS NO CONFIGURAÇÃO DO SEI NÃO DECLARADO');
+        throw new InfraException('PARï¿½METRO DE Mï¿½DULOS NO CONFIGURAï¿½ï¿½O DO SEI Nï¿½O DECLARADO');
     } else {
         $arrModulos = $arrConfig['SEI']['Modulos'];
         if (!key_exists('PesquisaIntegracao', $arrModulos)) {
-            throw new InfraException('MÓDULO PESQUISA PÚBLICA NÃO DECLARADO NA CONFIGURAÇÃO DO SEI');
+            throw new InfraException('Mï¿½DULO PESQUISA Pï¿½BLICA Nï¿½O DECLARADO NA CONFIGURAï¿½ï¿½O DO SEI');
         }
     }
 
     if (!class_exists('PesquisaIntegracao')) {
-        throw new InfraException('A CLASSE PRINCIPAL "PesquisaIntegracao" DO MÓDULO NÃO FOI ENCONTRADA');
+        throw new InfraException('A CLASSE PRINCIPAL "PesquisaIntegracao" DO Mï¿½DULO Nï¿½O FOI ENCONTRADA');
     }
 
     InfraScriptVersao::solicitarAutenticacao(BancoSei::getInstance());
